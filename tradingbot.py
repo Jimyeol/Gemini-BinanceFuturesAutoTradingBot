@@ -1,6 +1,7 @@
 import binance_api
 import json
 import alternative
+import util
 
 asset = json.loads(binance_api.get_asset_summary())
 print("총 잔고: " + asset[0]["availableBalance"])
@@ -18,3 +19,13 @@ print("수량: " + current_position[0]["positionAmt"] + "BTC")
 fear_greed_index = json.loads(alternative.get_fear_and_greed_index())
 print("탐욕 값: " + fear_greed_index["data"][0]["value"])
 print("탐욕 지수: " + fear_greed_index["data"][0]["value_classification"])
+
+rsi = binance_api.calculate_rsi("BTCUSDT", 100)
+# util.save_json_to_file("calculate_rsi", rsi)
+
+ma = binance_api.calculate_moving_averages("BTCUSDT", 1000)
+# util.save_json_to_file("calculate_moving_averages", ma)
+
+
+
+

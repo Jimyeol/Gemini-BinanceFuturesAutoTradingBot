@@ -4,6 +4,8 @@ load_dotenv()
 import json
 from binance.um_futures import UMFutures
 from binance.error import ClientError
+import pandas as pd
+import pandas_ta as ta
 
 # Binance Test Futures Connect Client
 um_futures_client = UMFutures(
@@ -76,3 +78,60 @@ def get_position_summary():
 
     return json.dumps(summary, indent=4)
 
+"""
+----------------------------------------------------
+바이낸스에서 4시간 봉 캔들 데이터를 가져옵니다.
+"""
+def get_4h_candles(symbol, limit=100):
+
+    klines = um_futures_client.klines(
+        symbol=symbol,
+        interval='4h',
+        limit=limit
+    )
+    
+    # 데이터를 DataFrame으로 변환
+    columns = ['timestamp', 'open', 'high', 'low', 'close', 'volume', 
+               'close_time', 'quote_asset_volume', 'number_of_trades', 
+               'taker_buy_base_asset_volume', 'taker_buy_quote_asset_volume', 'ignore']
+    df = pd.DataFrame(klines, columns=columns)
+    df['close'] = df['close'].astype(float)
+    return df
+
+
+"""
+----------------------------------------------------
+주어진 DataFrame에 대해 RSI를 계산합니다.
+"""
+def calculate_rsi(symbol, limit, period=14):
+    df = get_4h_candles(symbol, limit)
+
+    df['RSI_14'] = ta.rsi(df['close'], length=period)
+    
+    # 필요한 열만 선택
+    result_df = df[['timestamp', 'close', 'RSI_14']]
+    
+    # 결과를 JSON 형식으로 변환
+    result_json = result_df.to_json(orient='records')
+    return result_json
+
+"""
+----------------------------------------------------
+주어진 DataFrame에 대해 이동 평균을 계산합니다.
+"""
+def calculate_moving_averages(symbol, limit):
+    df = get_4h_candles(symbol, limit)
+    
+    df['MA_5'] = ta.sma(df['close'], length=5)
+    df['MA_20'] = ta.sma(df['close'], length=20)
+    df['MA_60'] = ta.sma(df['close'], length=60)
+    df['MA_120'] = ta.sma(df['close'], length=120)
+    df['MA_200'] = ta.sma(df['close'], length=200)
+    
+    # 필요한 열만 선택
+    result_df = df[['timestamp', 'close', 'MA_5', 'MA_20', 'MA_60', 'MA_120', 'MA_200']]
+    
+    # 결과를 JSON 형식으로 변환
+    result_json = result_df.to_json(orient='records')
+    
+    return result_json
