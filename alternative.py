@@ -1,14 +1,16 @@
 import requests
 import json
 
-def get_fear_and_greed_index():
-    url = "https://api.alternative.me/fng/"
-    
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # This will raise an error for bad status codes
-        data = response.json()
-        return json.dumps(data, indent=4)
-    except requests.RequestException as e:
-        print(f"Error fetching data from Fear & Greed Index API: {e}")
-        return None
+def get_fear_and_greed_index(limit=1, date_format=''):
+    base_url = "https://api.alternative.me/fng/"
+    params = {
+        'limit': limit,
+        'format': 'json',
+        'date_format': date_format
+    }
+    response = requests.get(base_url, params=params)
+    myData = response.json()['data']
+    resStr = ""
+    for data in myData:
+        resStr += str(data)
+    return resStr

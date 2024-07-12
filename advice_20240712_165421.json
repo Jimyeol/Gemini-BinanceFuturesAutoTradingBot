@@ -1,0 +1,15 @@
+{
+    "decision": "Short",
+    "percentage": 35,
+    "leverage": 5,
+    "indicators": {
+        "RSI": "RSI_14 values have hovered mostly around 40-55, indicating weak bullish momentum but not strong overbought conditions. The latest recorded RSI_14 is 50.333372782, which is closer to neutral.",
+        "MACD": "MACD recently showed a 'Dead Cross' indicating a bearish crossover. The latest MACD values suggest weakening bullish momentum.",
+        "Bollinger Bands": "Prices have been touching and fluctuating around the middle band, indicative of no clear breakout direction. However, the upper band is at 59256.1244801993, and the middle band is at 57637.235, which could indicate a return to lower bands.",
+        "Funding Rate": "The funding rate is negative (-0.00191203), indicating more short positions are being held and suggesting bearish sentiment in the market.",
+        "Trend Signals": "The trend signal is 'short' with a generated signal price of 55200.2, indicating an anticipated downward trend.",
+        "Fear and Greed Index": "Recent sentiments are in 'Extreme Fear' and 'Fear' categories with the latest value at 25 (Extreme Fear), suggesting bearish sentiment and potentially more downside."
+    },
+    "reason": "Multiple indicators align with a bearish sentiment. The MACD has shown a 'Dead Cross', the funding rate is negative indicating a preference for short positions, and the Fear and Greed Index is in the 'Extreme Fear' territory. Bollinger Bands indicate no clear breakout but suggest a return to mean or lower bands.",
+    "Action": "Enter a short position with 35% of available USDT, leveraging 5x to capitalize on the anticipated downward momentum."
+}

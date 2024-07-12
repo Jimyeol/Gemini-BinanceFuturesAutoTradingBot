@@ -82,7 +82,7 @@ def get_position_summary():
 ----------------------------------------------------
 바이낸스에서 4시간 봉 캔들 데이터를 가져옵니다.
 """
-def get_4h_candles(symbol, limit=100):
+def get_4h_candles(symbol, limit):
 
     klines = um_futures_client.klines(
         symbol=symbol,
@@ -103,15 +103,10 @@ def get_4h_candles(symbol, limit=100):
 ----------------------------------------------------
 주어진 DataFrame에 대해 RSI를 계산합니다.
 """
-def calculate_rsi(symbol, limit, period=14):
-    df = get_4h_candles(symbol, limit)
-
+def calculate_rsi(candles_df, limit, period=14):
+    df = candles_df.tail(limit).copy()
     df['RSI_14'] = ta.rsi(df['close'], length=period)
-    
-    # 필요한 열만 선택
     result_df = df[['timestamp', 'close', 'RSI_14']]
-    
-    # 결과를 JSON 형식으로 변환
     result_json = result_df.to_json(orient='records')
     return result_json
 
@@ -119,8 +114,8 @@ def calculate_rsi(symbol, limit, period=14):
 ----------------------------------------------------
 주어진 DataFrame에 대해 이동 평균을 계산합니다.
 """
-def calculate_moving_averages(symbol, limit):
-    df = get_4h_candles(symbol, limit)
+def calculate_moving_averages(candles_df, limit):
+    df = candles_df.tail(limit).copy()
     
     df['MA_5'] = ta.sma(df['close'], length=5)
     df['MA_20'] = ta.sma(df['close'], length=20)
@@ -128,10 +123,7 @@ def calculate_moving_averages(symbol, limit):
     df['MA_120'] = ta.sma(df['close'], length=120)
     df['MA_200'] = ta.sma(df['close'], length=200)
     
-    # 필요한 열만 선택
     result_df = df[['timestamp', 'close', 'MA_5', 'MA_20', 'MA_60', 'MA_120', 'MA_200']]
-    
-    # 결과를 JSON 형식으로 변환
     result_json = result_df.to_json(orient='records')
     
     return result_json
@@ -141,16 +133,14 @@ def calculate_moving_averages(symbol, limit):
 ----------------------------------------------------
 주어진 DataFrame에 대해 MACD를 계산합니다.
 """
-def calculate_macd(symbol, limit):
-    df = get_4h_candles(symbol, limit)
+def calculate_macd(candles_df, limit):
+    df = candles_df.tail(limit).copy()
     
-    # MACD 계산
     macd = ta.macd(df['close'], fast=12, slow=26, signal=9)
     df['MACD'] = macd['MACD_12_26_9']
     df['Signal_Line'] = macd['MACDs_12_26_9']
     df['MACD_Histogram'] = macd['MACDh_12_26_9']
 
-    # 골든크로스와 데드크로스 체크
     df['Cross'] = df.apply(lambda row: 'Golden Cross' if row['MACD'] > row['Signal_Line'] else ('Dead Cross' if row['MACD'] < row['Signal_Line'] else 'No Cross'), axis=1)
     
     result_df = df[['timestamp', 'close', 'MACD', 'Signal_Line', 'MACD_Histogram', 'Cross']]
@@ -162,10 +152,9 @@ def calculate_macd(symbol, limit):
 ----------------------------------------------------
 주어진 DataFrame에 대해 볼린저 밴드를 계산합니다.
 """
-def calculate_bollinger_bands(symbol, limit):
-    df = get_4h_candles(symbol, limit)
+def calculate_bollinger_bands(candles_df, limit):
+    df = candles_df.tail(limit).copy()
     
-    # 볼린저 밴드 계산
     bollinger = ta.bbands(df['close'], length=20, std=2)
     df['Upper_Band'] = bollinger['BBU_20_2.0']
     df['Middle_Band'] = bollinger['BBM_20_2.0']
@@ -190,12 +179,8 @@ def get_top_trader_long_short_ratio(symbol, limit=100, period="4h"):
     except Exception as e:
         print(f"Error fetching top trader long/short ratio: {e}")
         return None
-    
 
-"""
-----------------------------------------------------
-주어진 심볼에 대한 Funding Rate 정보를 가져와 JSON으로 반환하는 함수
-"""
+
 """
 ----------------------------------------------------
 주어진 심볼에 대한 최신 Funding Rate 정보를 가져와 JSON으로 반환하는 함수
@@ -204,13 +189,66 @@ def get_latest_funding_rate(symbol):
     try:
         funding_rate_info = um_futures_client.funding_rate(
             symbol=symbol,
-            limit=1  # 가장 최신의 하나만 가져오기 위해 limit를 1로 설정
+            limit=1
         )
         if funding_rate_info:
-            latest_funding_rate = funding_rate_info[0]  # 리스트의 첫 번째 요소가 최신 정보
+            latest_funding_rate = funding_rate_info[0]
             return json.dumps(latest_funding_rate, indent=4)
         else:
             return None
     except Exception as e:
         print(f"Error fetching funding rate info: {e}")
         return None
+
+
+"""
+----------------------------------------------------
+슈퍼 트랜드
+"""
+def calculate_supertrend(df, period=14, multiplier=6):
+    df['open'] = df['open'].astype(float)
+    df['high'] = df['high'].astype(float)
+    df['low'] = df['low'].astype(float)
+    df['close'] = df['close'].astype(float)
+
+    df['TR'] = ta.true_range(df['high'], df['low'], df['close'])
+    df['ATR'] = ta.atr(df['high'], df['low'], df['close'], length=period)
+    df['Upper_Band'] = ((df['high'] + df['low']) / 2) + (multiplier * df['ATR'])
+    df['Lower_Band'] = ((df['high'] + df['low']) / 2) - (multiplier * df['ATR'])
+    df['trend'] = 1  # 1 for long, -1 for short
+
+    for current in range(1, len(df.index)):
+        previous = current - 1
+
+        if df['close'][current] > df['Upper_Band'][previous]:
+            df.loc[current, 'trend'] = 1
+        elif df['close'][current] < df['Lower_Band'][previous]:
+            df.loc[current, 'trend'] = -1
+        else:
+            df.loc[current, 'trend'] = df['trend'][previous]
+            if df['trend'][current] == 1 and df['Lower_Band'][current] < df['Lower_Band'][previous]:
+                df.loc[current, 'Lower_Band'] = df['Lower_Band'][previous]
+            if df['trend'][current] == -1 and df['Upper_Band'][current] > df['Upper_Band'][previous]:
+                df.loc[current, 'Upper_Band'] = df['Upper_Band'][previous]
+
+    return df.to_dict(orient='records')
+
+
+"""
+----------------------------------------------------
+슈퍼트랜드에 관한 매수/매도 신호
+"""
+def generate_signals(candles_df):
+    supertrend_data = calculate_supertrend(candles_df)
+    df = pd.DataFrame(supertrend_data)
+    
+    signals = []
+    for current in range(1, len(df.index)):
+        if df['trend'][current] == 1 and df['trend'][current - 1] == -1:
+            signals.append({"signal": "long", "price": df['close'][current]})
+        elif df['trend'][current] == -1 and df['trend'][current - 1] == 1:
+            signals.append({"signal": "short", "price": df['close'][current]})
+    
+    # Return the most recent signal
+    latest_signal = signals[-1] if signals else None
+    return json.dumps(latest_signal, indent=4) if latest_signal else None
