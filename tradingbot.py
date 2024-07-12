@@ -26,6 +26,21 @@ rsi = binance_api.calculate_rsi("BTCUSDT", 100)
 ma = binance_api.calculate_moving_averages("BTCUSDT", 1000)
 # util.save_json_to_file("calculate_moving_averages", ma)
 
+macd = binance_api.calculate_macd("BTCUSDT", 500)
+# util.save_json_to_file("calculate_macd", macd)
+
+bb = binance_api.calculate_bollinger_bands("BTCUSDT", 100)
+# util.save_json_to_file("calculate_bollinger_bands", bb)
+
+topTraderLongShortRatio = binance_api.get_top_trader_long_short_ratio("BTCUSDT", "100", "4h")
+# util.save_json_to_file("get_top_trader_long_short_ratio", topTraderLongShortRatio)
+
+fundingRate = binance_api.get_latest_funding_rate("BTCUSDT")
+util.save_json_to_file("get_latest_funding_rate", fundingRate)
+
+
+
+
 
 
 

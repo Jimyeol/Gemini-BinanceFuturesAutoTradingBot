@@ -135,3 +135,82 @@ def calculate_moving_averages(symbol, limit):
     result_json = result_df.to_json(orient='records')
     
     return result_json
+
+
+"""
+----------------------------------------------------
+주어진 DataFrame에 대해 MACD를 계산합니다.
+"""
+def calculate_macd(symbol, limit):
+    df = get_4h_candles(symbol, limit)
+    
+    # MACD 계산
+    macd = ta.macd(df['close'], fast=12, slow=26, signal=9)
+    df['MACD'] = macd['MACD_12_26_9']
+    df['Signal_Line'] = macd['MACDs_12_26_9']
+    df['MACD_Histogram'] = macd['MACDh_12_26_9']
+
+    # 골든크로스와 데드크로스 체크
+    df['Cross'] = df.apply(lambda row: 'Golden Cross' if row['MACD'] > row['Signal_Line'] else ('Dead Cross' if row['MACD'] < row['Signal_Line'] else 'No Cross'), axis=1)
+    
+    result_df = df[['timestamp', 'close', 'MACD', 'Signal_Line', 'MACD_Histogram', 'Cross']]
+    result = result_df.to_json(orient='records')
+    return result
+
+
+"""
+----------------------------------------------------
+주어진 DataFrame에 대해 볼린저 밴드를 계산합니다.
+"""
+def calculate_bollinger_bands(symbol, limit):
+    df = get_4h_candles(symbol, limit)
+    
+    # 볼린저 밴드 계산
+    bollinger = ta.bbands(df['close'], length=20, std=2)
+    df['Upper_Band'] = bollinger['BBU_20_2.0']
+    df['Middle_Band'] = bollinger['BBM_20_2.0']
+    df['Lower_Band'] = bollinger['BBL_20_2.0']
+
+    result_df = df[['timestamp', 'close', 'Upper_Band', 'Middle_Band', 'Lower_Band']]
+    result = result_df.to_json(orient='records')
+    return result
+
+
+"""
+----------------------------------------------------
+주어진 심볼에 대한 Top Trader 롱/숏 비율(포지션)을 가져와 JSON으로 반환하는 함수
+"""
+def get_top_trader_long_short_ratio(symbol, limit=100, period="4h"):
+    try:
+        long_short_ratio = um_futures_client.top_long_short_position_ratio(
+            symbol=symbol,
+            period=period
+        )
+        return json.dumps(long_short_ratio, indent=4)
+    except Exception as e:
+        print(f"Error fetching top trader long/short ratio: {e}")
+        return None
+    
+
+"""
+----------------------------------------------------
+주어진 심볼에 대한 Funding Rate 정보를 가져와 JSON으로 반환하는 함수
+"""
+"""
+----------------------------------------------------
+주어진 심볼에 대한 최신 Funding Rate 정보를 가져와 JSON으로 반환하는 함수
+"""
+def get_latest_funding_rate(symbol):
+    try:
+        funding_rate_info = um_futures_client.funding_rate(
+            symbol=symbol,
+            limit=1  # 가장 최신의 하나만 가져오기 위해 limit를 1로 설정
+        )
+        if funding_rate_info:
+            latest_funding_rate = funding_rate_info[0]  # 리스트의 첫 번째 요소가 최신 정보
+            return json.dumps(latest_funding_rate, indent=4)
+        else:
+            return None
+    except Exception as e:
+        print(f"Error fetching funding rate info: {e}")
+        return None
