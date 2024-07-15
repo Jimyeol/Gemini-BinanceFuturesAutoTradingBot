@@ -1,7 +1,9 @@
 python-dotenv
-openai
 pyjwt
 pandas
 pandas_ta
 schedule
 python-binance
+requests
+google-generativeai
+Pillow
