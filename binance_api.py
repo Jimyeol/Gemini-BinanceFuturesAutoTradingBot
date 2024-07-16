@@ -13,6 +13,10 @@ um_futures_client = UMFutures(
     secret=os.getenv("BINANCE_TEST_NET_SECRET_KEY"),
     base_url="https://testnet.binancefuture.com")
 
+# um_futures_client = UMFutures(
+#     key=os.getenv("BINANCE_ACCESS_KEY"), 
+#     secret=os.getenv("BINANCE_SECREY_KEY"))
+
 
 """
 ----------------------------------------------------
@@ -445,3 +449,82 @@ def get_stochastic_oscillator_data(candle_json, limit, period=14, smooth_k=3, sm
         stochastic_data[f"stochastic_{key.split('_')[-1]}"] = json.loads(stochastic_json)
     
     return json.dumps(stochastic_data, indent=4)
+
+
+# ----------Order---------------
+#레버리지 설정
+def set_leverage(symbol, leverage):
+    try:
+        response = um_futures_client.change_leverage(symbol=symbol, leverage=leverage)
+        print(f"Leverage set to {leverage} for {symbol}: {response}")
+    except Exception as e:
+        print(f"Error setting leverage: {e}")
+        
+def get_balance():
+    try:
+        balance_info = um_futures_client.balance()
+        for asset in balance_info:
+            if asset['asset'] == 'USDT':
+                return float(asset['balance'])
+        return 0
+    except Exception as e:
+        print(f"Error fetching balance: {e}")
+        return 0
+        
+def place_order(order_details):
+    try:
+        # Prepare the parameters for the order
+        order_params = {
+            'symbol': order_details["symbol"],
+            'side': order_details["side"],
+            'type': order_details["type"],
+            'quantity': order_details["quantity"],
+            'positionSide': order_details["positionSide"]
+        }
+        
+        if order_details["type"] != "MARKET":
+            order_params['timeInForce'] = order_details["timeInForce"]
+            order_params['price'] = order_details["price"]
+            order_params['stopPrice'] = order_details["stopPrice"]
+            order_params['closePosition'] = order_details["closePosition"]
+            order_params['workingType'] = order_details["workingType"]
+            order_params['priceProtect'] = order_details["priceProtect"]
+            order_params['newOrderRespType'] = order_details["newOrderRespType"]
+            order_params['newClientOrderId'] = order_details["newClientOrderId"]
+
+            # Add optional parameters if they are not None
+            if order_details.get("activationPrice") is not None:
+                order_params['activationPrice'] = order_details["activationPrice"]
+            if order_details.get("callbackRate") is not None:
+                order_params['callbackRate'] = order_details["callbackRate"]
+        
+        # Include reduceOnly if it is specified and true
+        if order_details.get("reduceOnly"):
+            order_params['reduceOnly'] = order_details["reduceOnly"]
+
+        response = um_futures_client.new_order(**order_params)
+        print(f"Order placed: {response}")
+    except Exception as e:
+        print(f"Error placing order: {e}")
+
+def process_order(order_json):
+    # Parse the input JSON
+    order_data = json.loads(order_json)
+    
+    # Set leverage
+    set_leverage(order_data["order"]["symbol"], order_data["leverage"])
+    
+    # Calculate the quantity to order based on the investment percentage
+    total_balance = get_balance()
+    investment_amount = total_balance * (order_data["investment_percentage"] / 100)
+
+    if order_data["order"]["type"] == "MARKET":
+        order_quantity = investment_amount / float(order_data["order"]["price"])
+    else:
+        order_quantity = investment_amount / float(order_data["order"]["price"])
+
+    # Update the quantity in the order details
+    order_data["order"]["quantity"] = round(order_quantity, 4)
+
+    # Place the order
+    place_order(order_data["order"])

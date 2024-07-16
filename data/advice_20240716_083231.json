@@ -1,0 +1,41 @@
+{
+    "recommended_action": "Long",
+    "investment_percentage": 70,
+    "leverage": 5,
+    "risk_awareness": "Consider the high risk involved with leverage, but also recognize the opportunity for substantial gains.",
+    "probability_of_rise": {
+        "percentage": 80,
+        "reasons": [
+            "RSI and MACD indicators suggest strong bullish momentum.",
+            "The Fear and Greed Index is in the neutral zone, suggesting an opportunity for a potential price increase.",
+            "The overall market trend is showing signs of upward movement.",
+            "Recent price action shows a series of higher lows, supporting a bullish outlook."
+        ]
+    },
+    "probability_of_fall": {
+        "percentage": 20,
+        "reasons": [
+            "Market volatility remains a risk factor, potentially leading to unexpected price drops.",
+            "Bollinger Bands are narrowing, potentially indicating a period of consolidation.",
+            "Funding rate is negative, which indicates a slight bias towards short positions."
+        ]
+    },
+    "order": {
+        "symbol": "BTCUSDT",
+        "side": "BUY",
+        "type": "LIMIT",
+        "timeInForce": "GTC",
+        "quantity": 0.02,
+        "price": 62900,
+        "reduceOnly": false,
+        "newClientOrderId": "my_order_001",
+        "stopPrice": 62000,
+        "closePosition": false,
+        "activationPrice": 63000,
+        "callbackRate": 0.1,
+        "workingType": "MARK_PRICE",
+        "priceProtect": true,
+        "newOrderRespType": "RESULT",
+        "positionSide": "LONG"
+    }
+}

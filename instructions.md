@@ -657,6 +657,143 @@ To explain the provided Binance API data content comprehensively, we can break i
 7. **Apply Aggressive Risk Management Principles**: While maintaining a balance, prioritize higher potential returns even if they come with increased risks. Ensure that any proposed action aligns with an aggressive investment strategy, considering the current portfolio balance, the investment state, and market volatility.
 8. **Incorporate Market Sentiment Analysis**: Evaluate whether the current market sentiment, as revealed by the Fear and Greed Index analysis and elements of technical sentiment analysis, supports or contradicts your aggressive trading behavior. Use this sentiment analysis to adjust the suggested actions and investment allocations to ensure that your decision-making aligns with a high-risk, high-reward strategy.
 9. **Determine Action and Percentage**: Based on the comprehensive analysis, determine the most appropriate action (Long, Short, Hold). Specify the percentage of the portfolio to be invested in this action and set the leverage. Recognize the associated risks while capturing more significant opportunities. Additionally, provide a clear percentage and reasons for the likelihood of the price rising or falling based on the current price. The response must be in JSON format.
+10. **Order Json**: Create an order JSON by referring to the Binance Futures Order Rule. If it's a new order, follow the New Order rules. If you want to modify an existing order, follow the Modify Order rules. If you want to cancel an order, follow the Cancel Order rules.
+
+### Binance Futures Order Rule
+#### New Order Request Parameters
+This guide provides detailed information on the request parameters required to create a new order on Binance Futures. 
+1. `symbol` (string) *[MANDATORY]*
+    The trading pair symbol, e.g., `BTCUSDT`.
+2. `side` (string) *[MANDATORY]*
+    The side of the order.
+ - `BUY`
+ - `SELL`
+3. `type` (string) *[MANDATORY]*
+    The type of order to be placed.
+ - `LIMIT`
+ - `MARKET`
+ - `STOP`
+ - `STOP_MARKET`
+ - `TAKE_PROFIT`
+ - `TAKE_PROFIT_MARKET`
+ - `TRAILING_STOP_MARKET`
+4. `timeInForce` (string) *[OPTIONAL]*
+    The time the order will be in force.
+ - `GTC` (Good Till Cancel)
+ - `IOC` (Immediate or Cancel)
+ - `FOK` (Fill or Kill)
+5. `quantity` (decimal) *[MANDATORY]*
+    The quantity of the order.
+6. `reduceOnly` (boolean) *[OPTIONAL]*
+Specifies whether the order will only reduce the position size.
+ - `true`
+ - `false`
+7. `price` (decimal) *[OPTIONAL]*
+The price at which the order is placed. Required for `LIMIT`, `STOP`, `TAKE_PROFIT` orders.
+8. `newClientOrderId` (string) *[OPTIONAL]*
+A unique ID for the order. Automatically generated if not sent.
+9. `stopPrice` (decimal) *[OPTIONAL]*
+The stop price. Used with `STOP`, `STOP_MARKET`, `TAKE_PROFIT`, `TAKE_PROFIT_MARKET` orders.
+10. `closePosition` (boolean) *[OPTIONAL]*
+Close the position.
+ - `true`
+ - `false`
+11. `activationPrice` (decimal) *[OPTIONAL]*
+The activation price for `TRAILING_STOP_MARKET` orders.
+12. `callbackRate` (decimal) *[OPTIONAL]*
+The callback rate for `TRAILING_STOP_MARKET` orders.
+13. `workingType` (string) *[OPTIONAL]*
+Specifies the type of price to use.
+ - `MARK_PRICE`
+ - `CONTRACT_PRICE`
+14. `priceProtect` (boolean) *[OPTIONAL]*
+Price protection for the order.
+ - `true`
+ - `false`
+15. `newOrderRespType` (string) *[OPTIONAL]*
+Set the response JSON. `ACK`, `RESULT`, or `FULL`. Default: `ACK`.
+16. `positionSide` (string) *[OPTIONAL]*
+The position side.
+ - `BOTH`
+ - `LONG`
+ - `SHORT`
+#### Example Request
+```json
+{
+  "symbol": "BTCUSDT",
+  "side": "BUY",
+  "type": "LIMIT",
+  "timeInForce": "GTC",
+  "quantity": 0.01,
+  "price": 45000,
+  "reduceOnly": false,
+  "newClientOrderId": "my_order_001",
+  "stopPrice": 44000,
+  "closePosition": false,
+  "activationPrice": 45000,
+  "callbackRate": 0.1,
+  "workingType": "MARK_PRICE",
+  "priceProtect": true,
+  "newOrderRespType": "RESULT",
+  "positionSide": "BOTH"
+}
+```
+#### Modify Order Request Parameters
+Modifying an order allows you to update certain parameters of an existing order. This can be useful for adjusting the price, quantity, or other attributes without needing to cancel and create a new order.
+1. `symbol` (string) *[MANDATORY]*
+The trading pair symbol, e.g., `BTCUSDT`.
+2. `orderId` (long) *[OPTIONAL]*
+The unique identifier of the order to modify.
+3. `origClientOrderId` (string) *[OPTIONAL]*
+The original client order ID assigned by the user.
+4. `quantity` (decimal) *[OPTIONAL]*
+The new quantity for the order.
+5. `price` (decimal) *[OPTIONAL]*
+The new price for the order.
+6. `stopPrice` (decimal) *[OPTIONAL]*
+The new stop price for the order.
+7. `recvWindow` (long) *[OPTIONAL]*
+The number of milliseconds after the request is created that the request is active. Default is 5000.
+8. `timestamp` (long) *[MANDATORY]*
+The timestamp of the request.
+#### Example Request
+```json
+{
+  "symbol": "BTCUSDT",
+  "orderId": 123456789,
+  "origClientOrderId": "my_order_001",
+  "quantity": 0.02,
+  "price": 45000,
+  "stopPrice": 44000,
+  "recvWindow": 5000,
+  "timestamp": 1625475600000
+}
+```
+#### Cancel Order Request Parameters
+Canceling an order allows you to remove an existing order from the order book. This is useful for stopping an order that you no longer want to be executed.
+1. `symbol` (string) *[MANDATORY]*
+The trading pair symbol, e.g., `BTCUSDT`.
+2. `orderId` (long) *[OPTIONAL]*
+The unique identifier of the order to cancel.
+3. `origClientOrderId` (string) *[OPTIONAL]*
+The original client order ID assigned by the user.
+4. `newClientOrderId` (string) *[OPTIONAL]*
+A new client order ID for the cancel order.
+5. `recvWindow` (long) *[OPTIONAL]*
+The number of milliseconds after the request is created that the request is active. Default is 5000.
+6. `timestamp` (long) *[MANDATORY]*
+The timestamp of the request.
+#### Example Request
+```json
+{
+  "symbol": "BTCUSDT",
+  "orderId": 123456789,
+  "origClientOrderId": "my_order_001",
+  "newClientOrderId": "cancel_order_001",
+  "recvWindow": 5000,
+  "timestamp": 1625475600000
+}
+```
 
 ## Examples
 ### Example Instruction for Making a Decision (JSON format)
@@ -667,7 +804,6 @@ To explain the provided Binance API data content comprehensively, we can break i
     "investment_percentage": 50,
     "leverage": 5,
     "risk_awareness": "Recognize the high risk due to leverage but seize the potential for significant gains.",
-    "current_price": "58,600",
     "probability_of_rise": {
         "percentage": 70,
         "reasons": [
@@ -682,6 +818,26 @@ To explain the provided Binance API data content comprehensively, we can break i
             "Market volatility remains high, posing a risk of sudden downturns.",
             "Potential bearish signals from Bollinger Bands and funding rate analysis."
         ]
+    },
+    "order" : {
+        {
+            "symbol": "BTCUSDT",
+            "side": "BUY",
+            "type": "LIMIT",
+            "timeInForce": "GTC",
+            "quantity": 0.01,
+            "price": 45000,
+            "reduceOnly": false,
+            "newClientOrderId": "my_order_001",
+            "stopPrice": 44000,
+            "closePosition": false,
+            "activationPrice": 45000,
+            "callbackRate": 0.1,
+            "workingType": "MARK_PRICE",
+            "priceProtect": true,
+            "newOrderRespType": "RESULT",
+            "positionSide": "LONG"
+        }
     }
 }
 ```
@@ -706,6 +862,26 @@ To explain the provided Binance API data content comprehensively, we can break i
             "Technical indicators such as Bollinger Bands and funding rate analysis indicate a bearish trend.",
             "High market volatility supports the likelihood of a price drop."
         ]
+    },
+    "order" : {
+        {
+            "symbol": "BTCUSDT",
+            "side": "BUY",
+            "type": "LIMIT",
+            "timeInForce": "GTC",
+            "quantity": 0.01,
+            "price": 45000,
+            "reduceOnly": false,
+            "newClientOrderId": "my_order_001",
+            "stopPrice": 44000,
+            "closePosition": false,
+            "activationPrice": 45000,
+            "callbackRate": 0.1,
+            "workingType": "MARK_PRICE",
+            "priceProtect": true,
+            "newOrderRespType": "RESULT",
+            "positionSide": "SHORT"
+        }
     }
 }
 ```

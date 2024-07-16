@@ -1,0 +1,40 @@
+{
+    "recommended_action": "Short",
+    "investment_percentage": 40,
+    "leverage": 4,
+    "risk_awareness": "Understand the potential for significant losses due to market volatility and leverage. Implement necessary stop-loss orders and monitor market activity closely.",
+    "probability_of_rise": {
+        "percentage": 20,
+        "reasons": [
+            "RSI 14 and MACD suggest potential bearish momentum.",
+            "Fear and Greed Index shows a 'Neutral' sentiment, which might indicate a lack of clear bullish pressure.",
+            "The price has been consolidating around the 62,000 mark, indicating potential for a pullback."
+        ]
+    },
+    "probability_of_fall": {
+        "percentage": 80,
+        "reasons": [
+            "Bollinger Bands and funding rate analysis point to a potential bearish trend.",
+            "Previous resistance levels near the 63,000 mark could cause a price drop.",
+            "High market volatility suggests a higher chance of a quick downward movement."
+        ]
+    },
+    "order": {
+        "symbol": "BTCUSDT",
+        "side": "SELL",
+        "type": "LIMIT",
+        "timeInForce": "GTC",
+        "quantity": 0.004,
+        "price": "62000",
+        "reduceOnly": false,
+        "newClientOrderId": "my_order_001",
+        "stopPrice": "63000",
+        "closePosition": false,
+        "activationPrice": null,
+        "callbackRate": null,
+        "workingType": "CONTRACT_PRICE",
+        "priceProtect": true,
+        "newOrderRespType": "RESULT",
+        "positionSide": "SHORT"
+    }
+}

@@ -27,6 +27,24 @@ class ProbabilityDetails(typing.TypedDict):
     percentage: int
     reasons: typing.List[str]
 
+class OrderDetails(typing.TypedDict):
+    symbol: str
+    side: str
+    type: str
+    timeInForce: str
+    quantity: float
+    price: float
+    reduceOnly: bool
+    newClientOrderId: str
+    stopPrice: float
+    closePosition: bool
+    activationPrice: float
+    callbackRate: float
+    workingType: str
+    priceProtect: bool
+    newOrderRespType: str
+    positionSide: str
+
 class Result(typing.TypedDict):
     recommended_action: str
     investment_percentage: int
@@ -34,6 +52,7 @@ class Result(typing.TypedDict):
     risk_awareness: str
     probability_of_rise: ProbabilityDetails
     probability_of_fall: ProbabilityDetails
+    order: OrderDetails
       
       
 # orderbook_json = json.loads(binance_api.get_order_book("BTCUSDT", 5))
@@ -106,4 +125,4 @@ def analyze_data_with_gpt4(my_data, indicator, fear_greed_index):
       
 advice = analyze_data_with_gpt4(my_data, indicator, alternative.get_fear_and_greed_index(limit=30))
 util.save_json_to_file("advice", json.loads(advice.text))
-
+binance_api.process_order(advice.text)
