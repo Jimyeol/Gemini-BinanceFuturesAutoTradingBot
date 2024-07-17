@@ -1,0 +1,37 @@
+{
+    "position": "Long",
+    "risk_awareness": "Although leverage involves considerable risk, it also presents an opportunity for significant returns. Please proceed cautiously while considering the possibility of potential profits.",
+    "probability_of_rise": {
+        "percentage": 75,
+        "reasons": [
+            "The Fear and Greed Index is in the Greed zone, demonstrating bullish sentiment.",
+            "The RSI on the 4-hour chart is above 50, indicating bullish momentum.",
+            "The price has recently broken above the 50-day moving average, signaling an uptrend.",
+            "Volume analysis reveals increasing buying activity, bolstering the bullish signal."
+        ]
+    },
+    "probability_of_fall": {
+        "percentage": 25,
+        "reasons": [
+            "The current price is approaching the upper Bollinger Band on the daily chart, which may act as a resistance level.",
+            "There might be potential for profit-taking by traders at this level.",
+            "Upcoming economic releases could introduce uncertainty into the market, potentially impacting sentiment."
+        ]
+    },
+    "order": {
+        "recommended_action": "Long",
+        "investment_percentage": 75,
+        "leverage": 4,
+        "symbol": "BTCUSDT",
+        "side": "BUY",
+        "timeInForce": "GTC",
+        "entryPrice": 65000.1,
+        "entryPriceReason": "The current price of 65000.10 is chosen as the entry point as it aligns with a recent breakout above the 50-day moving average, signaling a bullish trend. Additionally, the RSI on the 4-hour chart is above 50, supporting the bullish momentum.",
+        "exitPrice": 68000,
+        "exitPriceReason": "The target exit price is set at 68000, which is near the upper Bollinger Band on the daily chart, indicating a strategic profit-taking zone.",
+        "stoploss": 64000,
+        "stopLossReason": "The stop-loss is set at 64000, just below the 50-day moving average and the lower Bollinger Band on the 4-hour chart, offering a buffer against a potential short-term pullback.",
+        "positionSide": "LONG"
+    },
+    "hold_order": {}
+}

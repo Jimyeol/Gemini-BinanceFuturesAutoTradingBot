@@ -6,6 +6,8 @@ from binance.um_futures import UMFutures
 from binance.error import ClientError
 import pandas as pd
 import pandas_ta as ta
+import time
+from binance.enums import *
 
 # Binance Test Futures Connect Client
 um_futures_client = UMFutures(
@@ -459,7 +461,7 @@ def set_leverage(symbol, leverage):
         print(f"Leverage set to {leverage} for {symbol}: {response}")
     except Exception as e:
         print(f"Error setting leverage: {e}")
-        
+
 def get_balance():
     try:
         balance_info = um_futures_client.balance()
@@ -470,61 +472,113 @@ def get_balance():
     except Exception as e:
         print(f"Error fetching balance: {e}")
         return 0
-        
+
 def place_order(order_details):
     try:
-        # Prepare the parameters for the order
-        order_params = {
-            'symbol': order_details["symbol"],
-            'side': order_details["side"],
-            'type': order_details["type"],
-            'quantity': order_details["quantity"],
-            'positionSide': order_details["positionSide"]
-        }
-        
-        if order_details["type"] != "MARKET":
-            order_params['timeInForce'] = order_details["timeInForce"]
-            order_params['price'] = order_details["price"]
-            order_params['stopPrice'] = order_details["stopPrice"]
-            order_params['closePosition'] = order_details["closePosition"]
-            order_params['workingType'] = order_details["workingType"]
-            order_params['priceProtect'] = order_details["priceProtect"]
-            order_params['newOrderRespType'] = order_details["newOrderRespType"]
-            order_params['newClientOrderId'] = order_details["newClientOrderId"]
-
-            # Add optional parameters if they are not None
-            if order_details.get("activationPrice") is not None:
-                order_params['activationPrice'] = order_details["activationPrice"]
-            if order_details.get("callbackRate") is not None:
-                order_params['callbackRate'] = order_details["callbackRate"]
-        
-        # Include reduceOnly if it is specified and true
-        if order_details.get("reduceOnly"):
-            order_params['reduceOnly'] = order_details["reduceOnly"]
-
-        response = um_futures_client.new_order(**order_params)
+        response = um_futures_client.new_order(**order_details)
         print(f"Order placed: {response}")
     except Exception as e:
         print(f"Error placing order: {e}")
 
-def process_order(order_json):
-    # Parse the input JSON
-    order_data = json.loads(order_json)
+def process_order(result):
+    if 'type' in result['hold_order'] and result['hold_order']['type'] == 'hold':
+        print("Holding position. No new orders will be placed.")
+        return
+    
+    if 'type' in result['hold_order'] and result['hold_order']['type'] == 'close':
+        print("Close All Position.")
+        close_all_positions()
+        return
+    
+    symbol = result['order']['symbol']
+    leverage = result['order']['leverage']
+    investment_percentage = result['order']['investment_percentage']
+    side = result['order']['side']
+    side_reverse = SIDE_SELL if side == SIDE_BUY else SIDE_BUY
+    entry_price = result['order']['entryPrice']
+    exit_price = result['order']['exitPrice']
+    stoploss = result['order']['stoploss']
     
     # Set leverage
-    set_leverage(order_data["order"]["symbol"], order_data["leverage"])
+    set_leverage(symbol, leverage)
     
     # Calculate the quantity to order based on the investment percentage
     total_balance = get_balance()
-    investment_amount = total_balance * (order_data["investment_percentage"] / 100)
+    investment_amount = total_balance * (investment_percentage / 100)
+    order_quantity = investment_amount / entry_price
+    
+    # Prepare the order details for entry
+    entry_order_details = {
+        "symbol": symbol,
+        "side": side,
+        "type": FUTURE_ORDER_TYPE_LIMIT,
+        "timeInForce": TIME_IN_FORCE_GTC,
+        "quantity": round(order_quantity, 3),
+        "positionSide": "BOTH",
+        "price": entry_price
+    }
 
-    if order_data["order"]["type"] == "MARKET":
-        order_quantity = investment_amount / float(order_data["order"]["price"])
-    else:
-        order_quantity = investment_amount / float(order_data["order"]["price"])
+    # Place the entry order
+    place_order(entry_order_details)
 
-    # Update the quantity in the order details
-    order_data["order"]["quantity"] = round(order_quantity, 4)
+    # Delay to ensure orders are placed sequentially
+    time.sleep(0.5)
 
-    # Place the order
-    place_order(order_data["order"])
+    # Prepare the stop loss order details
+    stop_loss_order_details = {
+        "symbol": symbol,
+        "side": side_reverse,
+        "type": FUTURE_ORDER_TYPE_STOP_MARKET,
+        "quantity": round(order_quantity, 3),
+        "positionSide": "BOTH",
+        "stopPrice": stoploss
+    }
+
+    # Place the stop loss order
+    place_order(stop_loss_order_details)
+
+    # Delay to ensure orders are placed sequentially
+    time.sleep(0.5)
+
+    # Prepare the exit order details
+    exit_order_details = {
+        "symbol": symbol,
+        "side": side_reverse,
+        "type": FUTURE_ORDER_TYPE_LIMIT,
+        "timeInForce": TIME_IN_FORCE_GTC,
+        "quantity": round(order_quantity, 3),
+        "positionSide": "BOTH",
+        "price": exit_price
+    }
+    
+    place_order(exit_order_details)
+
+def get_open_positions():
+    try:
+        positions = um_futures_client.account()['positions']
+        open_positions = [pos for pos in positions if float(pos['positionAmt']) != 0]
+        return open_positions
+    except Exception as e:
+        print(f"Error fetching open positions: {e}")
+        return []
+
+def close_position(symbol, side, quantity):
+    try:
+        response = um_futures_client.new_order(
+            symbol=symbol,
+            side=side,
+            type=FUTURE_ORDER_TYPE_MARKET,
+            quantity=quantity,
+            reduceOnly=True
+        )
+        print(f"Closed position for {symbol}: {response}")
+    except Exception as e:
+        print(f"Error closing position for {symbol}: {e}")
+
+def close_all_positions():
+    open_positions = get_open_positions()
+    for position in open_positions:
+        symbol = position['symbol']
+        quantity = abs(float(position['positionAmt']))
+        side = SIDE_SELL if float(position['positionAmt']) > 0 else SIDE_BUY
+        close_position(symbol, side, quantity)

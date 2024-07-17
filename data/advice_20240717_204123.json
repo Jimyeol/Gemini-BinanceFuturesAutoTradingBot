@@ -1,0 +1,38 @@
+{
+    "hold_order": {
+        "type": "hold"
+    },
+    "order": {
+        "investment_percentage": 50,
+        "leverage": 4,
+        "symbol": "BTCUSDT",
+        "side": "SELL",
+        "timeInForce": "GTC",
+        "entryPrice": 65200,
+        "entryPriceReason": "The entry price of 65200 is chosen as the price is currently at 65239.20 and the RSI is above 50, indicating bullish momentum. However, the MACD shows a negative histogram, suggesting decreasing momentum. This might present a potential profit-taking zone for traders, especially with the Fear and Greed Index showing greed, potentially leading to a price correction.",
+        "exitPrice": 64000,
+        "exitPriceReason": "The exit price of 64000 is set based on the lower Bollinger Band on the 4-hour chart and the 200-day moving average, which both act as support levels. This price is also aligned with a historical support zone, indicating a potential area for price stabilization.",
+        "stoploss": 66000,
+        "stopLossReason": "The stop loss at 66000 is set above the current price to protect against false breakouts and potential upward swings. This level is slightly above the upper Bollinger Band on the 4-hour chart.",
+        "positionSide": "SHORT"
+    },
+    "position": "Short",
+    "probability_of_fall": {
+        "percentage": 65,
+        "reasons": [
+            "MACD on the 4-hour chart shows a negative histogram, suggesting decreasing momentum.",
+            "The price is approaching the upper Bollinger Band, indicating potential overbought conditions and a possible pullback.",
+            "The Fear and Greed Index is in the greed zone, suggesting that a correction could be on the horizon.",
+            "The funding rate is positive, indicating more demand for short positions, which could lead to further downside movement."
+        ]
+    },
+    "probability_of_rise": {
+        "percentage": 35,
+        "reasons": [
+            "RSI(14) is above 50, indicating bullish momentum.",
+            "The price is above the 50-day moving average, suggesting an ongoing uptrend.",
+            "The Fear and Greed Index is high, which indicates potential buying interest and a strong market sentiment."
+        ]
+    },
+    "risk_awareness": "Consider the high risk involved with leverage, but also recognize the opportunity for substantial gains. While a short position seems probable, the market is still showing some bullish momentum, and it's important to acknowledge that a sudden surge in price could trigger a stop loss."
+}

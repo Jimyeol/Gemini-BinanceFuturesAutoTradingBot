@@ -1,0 +1,26 @@
+{
+    "hold_order": {
+        "type": "hold"
+    },
+    "order": {},
+    "position": "Hold",
+    "probability_of_fall": {
+        "percentage": 50,
+        "reasons": [
+            "RSI(14) is near 50, indicating neutral momentum.",
+            "The price is hovering near the 200-day moving average, which historically acts as a key support/resistance level.",
+            "MACD line is flat, indicating a lack of momentum in either direction.",
+            "Bollinger Bands are narrowing on the daily chart, suggesting reduced volatility and a potential period of consolidation."
+        ]
+    },
+    "probability_of_rise": {
+        "percentage": 50,
+        "reasons": [
+            "RSI(14) is near 50, indicating neutral momentum.",
+            "The price is hovering near the 200-day moving average, which historically acts as a key support/resistance level.",
+            "MACD line is flat, indicating a lack of momentum in either direction.",
+            "Bollinger Bands are narrowing on the daily chart, suggesting reduced volatility and a potential period of consolidation."
+        ]
+    },
+    "risk_awareness": "The market is showing signs of consolidation with no clear direction. It is advisable to wait for a more defined trend before entering a new position."
+}

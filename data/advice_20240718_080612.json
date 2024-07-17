@@ -1,0 +1,24 @@
+{
+    "hold_order": {
+        "type": "hold"
+    },
+    "order": {},
+    "position": "Hold",
+    "probability_of_fall": {
+        "percentage": 50,
+        "reasons": [
+            "RSI(14) is near 50 on the 1-hour chart, indicating neutral momentum.",
+            "Bollinger Bands are narrowing on the 4-hour chart, suggesting reduced volatility and a potential period of consolidation.",
+            "MACD line is flat on the daily chart, indicating a lack of momentum in either direction."
+        ]
+    },
+    "probability_of_rise": {
+        "percentage": 50,
+        "reasons": [
+            "RSI(14) is near 50 on the 1-hour chart, indicating neutral momentum.",
+            "Bollinger Bands are narrowing on the 4-hour chart, suggesting reduced volatility and a potential period of consolidation.",
+            "MACD line is flat on the daily chart, indicating a lack of momentum in either direction."
+        ]
+    },
+    "risk_awareness": "Market conditions are currently unclear, suggesting a period of consolidation. Waiting for a more defined trend before entering a new position might be prudent."
+}

@@ -1,0 +1,37 @@
+{
+    "position": "Long",
+    "risk_awareness": "Consider the high risk involved with leverage, but also recognize the opportunity for substantial gains.",
+    "probability_of_rise": {
+        "percentage": 70,
+        "reasons": [
+            "RSI is above 50, indicating bullish momentum.",
+            "The Fear and Greed Index is showing greed, suggesting strong market sentiment.",
+            "The price has recently broken above the 50-day moving average, indicating a bullish trend.",
+            "Volume analysis shows increased buying activity."
+        ]
+    },
+    "probability_of_fall": {
+        "percentage": 30,
+        "reasons": [
+            "Possible overextension in the short term as indicated by Bollinger Bands.",
+            "Uncertainty due to upcoming economic reports.",
+            "The funding rate is relatively high, indicating potential for profit-taking by short-term traders."
+        ]
+    },
+    "order": {
+        "recommended_action": "Long",
+        "investment_percentage": 60,
+        "leverage": 4,
+        "symbol": "BTCUSDT",
+        "side": "BUY",
+        "timeInForce": "GTC",
+        "entryPrice": 63500,
+        "entryPriceReason": "The entry price of 63500 is chosen because the RSI(14) is above 50 on the 4-hour chart, indicating bullish momentum. Additionally, the price has recently broken above the 50-day moving average, confirming an upward trend.",
+        "exitPrice": 66500,
+        "exitPriceReason": "The exit price of 66500 is based on the upper Bollinger Band on the daily chart, which acts as a resistance level. The price has also historically faced resistance at this level.",
+        "stoploss": 62500,
+        "stopLossReason": "The stop loss at 62500 is aligned with the lower Bollinger Band on the 4-hour chart and is just below the 100-day moving average, providing a buffer against false breakouts.",
+        "positionSide": "LONG"
+    },
+    "hold_order": {}
+}

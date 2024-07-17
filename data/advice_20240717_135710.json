@@ -1,0 +1,39 @@
+{
+    "hold_order": {
+        "type": "hold"
+    },
+    "order": {
+        "recommended_action": "Long",
+        "investment_percentage": 70,
+        "leverage": 5,
+        "symbol": "BTCUSDT",
+        "side": "BUY",
+        "timeInForce": "GTC",
+        "entryPrice": 65500.0,
+        "entryPriceReason": "The current price is hovering near the 200-day moving average, indicating potential support. RSI is above 50, suggesting bullish momentum. Fear and Greed Index is in the Greed zone, indicating a positive market sentiment.",
+        "exitPrice": 68000.0,
+        "exitPriceReason": "The exit price is set based on the previous resistance levels and historical price action.",
+        "stoploss": 64000.0,
+        "stopLossReason": "The stop loss is set below the entry price to minimize potential losses.",
+        "positionSide": "LONG"
+    },
+    "position": "Long",
+    "probability_of_fall": {
+        "percentage": 30,
+        "reasons": [
+            "Potential profit-taking by traders due to recent price rise.",
+            "Uncertainty in the global economic outlook.",
+            "The funding rate is slightly positive, suggesting some demand for short positions."
+        ]
+    },
+    "probability_of_rise": {
+        "percentage": 70,
+        "reasons": [
+            "RSI is above 50, indicating bullish momentum.",
+            "MACD shows positive momentum, suggesting an upward trend.",
+            "The Fear and Greed Index is in the Greed zone, indicating a positive market sentiment.",
+            "The price has recently broken above the 50-day moving average, suggesting further upside potential."
+        ]
+    },
+    "risk_awareness": "While the current market conditions seem bullish, the high leverage used in this trade increases the risk of significant losses. It is important to monitor the market closely and be prepared to adjust your position accordingly."
+}

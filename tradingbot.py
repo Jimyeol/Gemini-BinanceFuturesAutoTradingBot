@@ -28,31 +28,30 @@ class ProbabilityDetails(typing.TypedDict):
     reasons: typing.List[str]
 
 class OrderDetails(typing.TypedDict):
-    symbol: str
-    side: str
-    type: str
-    timeInForce: str
-    quantity: float
-    price: float
-    reduceOnly: bool
-    newClientOrderId: str
-    stopPrice: float
-    closePosition: bool
-    activationPrice: float
-    callbackRate: float
-    workingType: str
-    priceProtect: bool
-    newOrderRespType: str
-    positionSide: str
-
-class Result(typing.TypedDict):
     recommended_action: str
     investment_percentage: int
     leverage: int
+    symbol: str
+    side: str
+    timeInForce: str
+    entryPrice: float
+    entryPriceReason: str
+    exitPrice: float
+    exitPriceReason: str
+    stoploss: float
+    stopLossReason: str
+    positionSide: str
+
+class HoldOrder(typing.TypedDict):
+    type: str  # 'hold' or 'close'
+
+class Result(typing.TypedDict):
+    position: str
     risk_awareness: str
     probability_of_rise: ProbabilityDetails
     probability_of_fall: ProbabilityDetails
     order: OrderDetails
+    hold_order: HoldOrder
       
       
 # orderbook_json = json.loads(binance_api.get_order_book("BTCUSDT", 5))
@@ -110,7 +109,6 @@ indicator = {
 
 #util.save_json_to_file("indicator", indicator)
 
-
 def analyze_data_with_gpt4(my_data, indicator, fear_greed_index):
     # 메시지 형식을 JSON 문자열로 변환
     message = [
@@ -125,4 +123,5 @@ def analyze_data_with_gpt4(my_data, indicator, fear_greed_index):
       
 advice = analyze_data_with_gpt4(my_data, indicator, alternative.get_fear_and_greed_index(limit=30))
 util.save_json_to_file("advice", json.loads(advice.text))
-binance_api.process_order(advice.text)
+
+binance_api.process_order(json.loads(advice.text))

@@ -1,0 +1,24 @@
+{
+    "hold_order": {
+        "type": "hold"
+    },
+    "order": {},
+    "position": "Hold",
+    "probability_of_fall": {
+        "percentage": 45,
+        "reasons": [
+            "The RSI(14) on the 1-hour chart is below 30, indicating oversold conditions and a potential upward correction.",
+            "The price has reached a historical support level, suggesting a potential bounce.",
+            "Stochastic Oscillator is showing a bullish crossover, indicating a potential short-term upward movement."
+        ]
+    },
+    "probability_of_rise": {
+        "percentage": 55,
+        "reasons": [
+            "The overall trend remains bearish as the price is below the 50-day and 200-day moving averages.",
+            "MACD on the 4-hour chart shows a negative histogram, indicating continued bearish momentum.",
+            "Volume analysis indicates selling pressure remains high."
+        ]
+    },
+    "risk_awareness": "The market conditions indicate that it is prudent to close the current short position to lock in profits or avoid further losses."
+}
