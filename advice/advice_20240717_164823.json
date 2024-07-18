@@ -33,5 +33,6 @@
         "stopLossReason": "The stop-loss is set at 64000, just below the 50-day moving average and the lower Bollinger Band on the 4-hour chart, offering a buffer against a potential short-term pullback.",
         "positionSide": "LONG"
     },
-    "hold_order": {}
+    "hold_order": {},
+    "timestamp": 1689607454
 }

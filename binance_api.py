@@ -10,14 +10,14 @@ import time
 from binance.enums import *
 
 # Binance Test Futures Connect Client
-um_futures_client = UMFutures(
-    key=os.getenv("BINANCE_TEST_NET_ACCESS_KEY"), 
-    secret=os.getenv("BINANCE_TEST_NET_SECRET_KEY"),
-    base_url="https://testnet.binancefuture.com")
-
 # um_futures_client = UMFutures(
-#     key=os.getenv("BINANCE_ACCESS_KEY"), 
-#     secret=os.getenv("BINANCE_SECREY_KEY"))
+#     key=os.getenv("BINANCE_TEST_NET_ACCESS_KEY"), 
+#     secret=os.getenv("BINANCE_TEST_NET_SECRET_KEY"),
+#     base_url="https://testnet.binancefuture.com")
+
+um_futures_client = UMFutures(
+    key=os.getenv("BINANCE_ACCESS_KEY"), 
+    secret=os.getenv("BINANCE_SECREY_KEY"))
 
 
 """
@@ -304,7 +304,7 @@ def get_bollinger_bands_data(candle_json, limit):
 주어진 심볼에 대한 Top Trader 롱/숏 비율(포지션)을 가져와 JSON으로 반환하는 함수
 """
 # 주어진 심볼에 대해 top trader long/short ratio를 계산하는 함수
-def get_top_trader_long_short_ratio(symbol, intervals, limit=100):
+def get_top_trader_long_short_ratio(symbol, intervals, limit=1):
     long_short_data = {}
     
     for interval in intervals:
@@ -313,8 +313,10 @@ def get_top_trader_long_short_ratio(symbol, intervals, limit=100):
                 symbol=symbol,
                 period=interval
             )
+            
             # 필요한 데이터만 추출하여 DataFrame으로 변환
-            df = pd.DataFrame(long_short_ratio['ratio'])
+            # assuming the data is directly a list of dictionaries
+            df = pd.DataFrame(long_short_ratio)
             df = df.tail(limit).copy()
             
             # 결과를 JSON 형식으로 변환
@@ -324,6 +326,9 @@ def get_top_trader_long_short_ratio(symbol, intervals, limit=100):
         except Exception as e:
             print(f"Error fetching top trader long/short ratio for {interval}: {e}")
             long_short_data[f"long_short_ratio_{interval}"] = None
+    
+    # 현재 시간을 Unix 타임스탬프로 추가
+    long_short_data["timestamp"] = int(time.time())
     
     return json.dumps(long_short_data, indent=4)
 

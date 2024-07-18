@@ -8,19 +8,9 @@ import util
 import google.generativeai as genai
 import os
 import typing_extensions as typing
+import telegram_bot
 
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-# img = PIL.Image.open('path/to/image.png')
-
-def get_instructions(file_path):
-    try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            instructions = file.read()
-        return instructions
-    except FileNotFoundError:
-        print("File not found.")
-    except Exception as e:
-        print("An error occurred while reading the file:", e)
         
 
 class ProbabilityDetails(typing.TypedDict):
@@ -63,7 +53,7 @@ model = genai.GenerativeModel(
   # See https://ai.google.dev/gemini-api/docs/safety-settings
   generation_config={"response_mime_type": "application/json",
                             "response_schema": Result},
-  system_instruction=get_instructions("instructions.md"),
+  system_instruction=util.get_instructions("instructions.md"),
 )
 
 
@@ -72,6 +62,10 @@ asset = json.loads(binance_api.get_asset_summary())
 current_position = json.loads(binance_api.get_position_summary())
 btc_price = json.loads(binance_api.get_coin_price("BTCUSDT"))
 
+# advice 폴더에서 최근 5개의 조언 파일 읽기
+directory_path = "advice"
+latest_files = util.get_latest_files(directory_path)
+recent_advice = [util.read_json_file(os.path.join(directory_path, file)) for file in latest_files]
 
 # Combine all results into a single JSON object
 my_data = {
@@ -80,13 +74,12 @@ my_data = {
     "asset": asset,
     "current_position": current_position,
     "open_order": open_order,
+    "recent_advice": recent_advice
 }
 #util.save_json_to_file("my_data", my_data)
 
 candle_json = binance_api.get_candles_to_join("BTCUSDT", ['1h', '4h', '1d', '1w'], 1500)
 
-# #topTraderLongShortRatio = binance_api.get_top_trader_long_short_ratio("BTCUSDT", "100", "4h")
-# # util.save_json_to_file("get_top_trader_long_short_ratio", topTraderLongShortRatio)
 
 rsi_json = binance_api.get_rsi_data(candle_json, 1)
 ma_json = binance_api.get_moving_averages_data(candle_json, 1)
@@ -95,6 +88,7 @@ bb_json = binance_api.get_bollinger_bands_data(candle_json, 1)
 fundingRate = binance_api.get_latest_funding_rate("BTCUSDT")
 trend_json = binance_api.get_supertrend_signals(candle_json, 1)
 stoch_oscil_json = binance_api.get_stochastic_oscillator_data(candle_json, 1)
+topTraderLongShortRatio = binance_api.get_top_trader_long_short_ratio("BTCUSDT", ['1h', '4h', '1d', '1w'])
 
 # Combine all results into a single JSON object
 indicator = {
@@ -104,7 +98,8 @@ indicator = {
     "bollinger_bands": json.loads(bb_json),
     "stoch_oscil": json.loads(stoch_oscil_json),
     "funding_rate": json.loads(fundingRate),
-    "trend_signals": json.loads(trend_json)
+    "trend_signals": json.loads(trend_json),
+    "topTraderLongShortRatio": json.loads(topTraderLongShortRatio)
 }
 
 #util.save_json_to_file("indicator", indicator)
@@ -123,5 +118,5 @@ def analyze_data_with_gpt4(my_data, indicator, fear_greed_index):
       
 advice = analyze_data_with_gpt4(my_data, indicator, alternative.get_fear_and_greed_index(limit=30))
 util.save_json_to_file("advice", json.loads(advice.text))
-
 binance_api.process_order(json.loads(advice.text))
+telegram_bot.send_message_position(json.loads(advice.text))

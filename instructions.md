@@ -194,6 +194,176 @@ To explain the provided Binance API data content comprehensively, we can break i
             "time": 1720681439156,
             "updateTime": 1720681439156
         }
+    ],
+    "recent_advice": [
+        {
+            "timestamp": 1689660254,
+            "hold_order": {
+                "type": "hold"
+            },
+            "order": {},
+            "position": "Hold",
+            "probability_of_fall": {
+                "percentage": 50,
+                "reasons": [
+                    "RSI(14) is near 50 on the 1-hour chart, indicating neutral momentum.",
+                    "Bollinger Bands are narrowing on the 4-hour chart, suggesting reduced volatility and a potential period of consolidation.",
+                    "MACD line is flat on the daily chart, indicating a lack of momentum in either direction."
+                ]
+            },
+            "probability_of_rise": {
+                "percentage": 50,
+                "reasons": [
+                    "RSI(14) is near 50 on the 1-hour chart, indicating neutral momentum.",
+                    "Bollinger Bands are narrowing on the 4-hour chart, suggesting reduced volatility and a potential period of consolidation.",
+                    "MACD line is flat on the daily chart, indicating a lack of momentum in either direction."
+                ]
+            },
+            "risk_awareness": "Market conditions are currently unclear, suggesting a period of consolidation. Waiting for a more defined trend before entering a new position might be prudent.",
+
+        },
+        {
+            "timestamp": 1689642654,
+            "hold_order": {
+                "type": "hold"
+            },
+            "order": {
+                "investment_percentage": 50,
+                "leverage": 4,
+                "symbol": "BTCUSDT",
+                "side": "SELL",
+                "timeInForce": "GTC",
+                "entryPrice": 65200,
+                "entryPriceReason": "The entry price of 65200 is chosen as the price is currently at 65239.20 and the RSI is above 50, indicating bullish momentum. However, the MACD shows a negative histogram, suggesting decreasing momentum. This might present a potential profit-taking zone for traders, especially with the Fear and Greed Index showing greed, potentially leading to a price correction.",
+                "exitPrice": 64000,
+                "exitPriceReason": "The exit price of 64000 is set based on the lower Bollinger Band on the 4-hour chart and the 200-day moving average, which both act as support levels. This price is also aligned with a historical support zone, indicating a potential area for price stabilization.",
+                "stoploss": 66000,
+                "stopLossReason": "The stop loss at 66000 is set above the current price to protect against false breakouts and potential upward swings. This level is slightly above the upper Bollinger Band on the 4-hour chart.",
+                "positionSide": "SHORT"
+            },
+            "position": "Short",
+            "probability_of_fall": {
+                "percentage": 65,
+                "reasons": [
+                    "MACD on the 4-hour chart shows a negative histogram, suggesting decreasing momentum.",
+                    "The price is approaching the upper Bollinger Band, indicating potential overbought conditions and a possible pullback.",
+                    "The Fear and Greed Index is in the greed zone, suggesting that a correction could be on the horizon.",
+                    "The funding rate is positive, indicating more demand for short positions, which could lead to further downside movement."
+                ]
+            },
+            "probability_of_rise": {
+                "percentage": 35,
+                "reasons": [
+                    "RSI(14) is above 50, indicating bullish momentum.",
+                    "The price is above the 50-day moving average, suggesting an ongoing uptrend.",
+                    "The Fear and Greed Index is high, which indicates potential buying interest and a strong market sentiment."
+                ]
+            },
+            "risk_awareness": "Consider the high risk involved with leverage, but also recognize the opportunity for substantial gains. While a short position seems probable, the market is still showing some bullish momentum, and it's important to acknowledge that a sudden surge in price could trigger a stop loss."
+        },
+        {
+            "timestamp": 1689625054,
+            "position": "Long",
+            "risk_awareness": "Although leverage involves considerable risk, it also presents an opportunity for significant returns. Please proceed cautiously while considering the possibility of potential profits.",
+            "probability_of_rise": {
+                "percentage": 75,
+                "reasons": [
+                    "The Fear and Greed Index is in the Greed zone, demonstrating bullish sentiment.",
+                    "The RSI on the 4-hour chart is above 50, indicating bullish momentum.",
+                    "The price has recently broken above the 50-day moving average, signaling an uptrend.",
+                    "Volume analysis reveals increasing buying activity, bolstering the bullish signal."
+                ]
+            },
+            "probability_of_fall": {
+                "percentage": 25,
+                "reasons": [
+                    "The current price is approaching the upper Bollinger Band on the daily chart, which may act as a resistance level.",
+                    "There might be potential for profit-taking by traders at this level.",
+                    "Upcoming economic releases could introduce uncertainty into the market, potentially impacting sentiment."
+                ]
+            },
+            "order": {
+                "recommended_action": "Long",
+                "investment_percentage": 75,
+                "leverage": 4,
+                "symbol": "BTCUSDT",
+                "side": "BUY",
+                "timeInForce": "GTC",
+                "entryPrice": 65000.1,
+                "entryPriceReason": "The current price of 65000.10 is chosen as the entry point as it aligns with a recent breakout above the 50-day moving average, signaling a bullish trend. Additionally, the RSI on the 4-hour chart is above 50, supporting the bullish momentum.",
+                "exitPrice": 68000,
+                "exitPriceReason": "The target exit price is set at 68000, which is near the upper Bollinger Band on the daily chart, indicating a strategic profit-taking zone.",
+                "stoploss": 64000,
+                "stopLossReason": "The stop-loss is set at 64000, just below the 50-day moving average and the lower Bollinger Band on the 4-hour chart, offering a buffer against a potential short-term pullback.",
+                "positionSide": "LONG"
+            },
+            "hold_order": {}
+        },
+        {
+            "timestamp": 1689607454,
+            "hold_order": {
+                "type": "hold"
+            },
+            "order": {
+                "recommended_action": "Long",
+                "investment_percentage": 70,
+                "leverage": 5,
+                "symbol": "BTCUSDT",
+                "side": "BUY",
+                "timeInForce": "GTC",
+                "entryPrice": 65500.0,
+                "entryPriceReason": "The current price is hovering near the 200-day moving average, indicating potential support. RSI is above 50, suggesting bullish momentum. Fear and Greed Index is in the Greed zone, indicating a positive market sentiment.",
+                "exitPrice": 68000.0,
+                "exitPriceReason": "The exit price is set based on the previous resistance levels and historical price action.",
+                "stoploss": 64000.0,
+                "stopLossReason": "The stop loss is set below the entry price to minimize potential losses.",
+                "positionSide": "LONG"
+            },
+            "position": "Long",
+            "probability_of_fall": {
+                "percentage": 30,
+                "reasons": [
+                    "Potential profit-taking by traders due to recent price rise.",
+                    "Uncertainty in the global economic outlook.",
+                    "The funding rate is slightly positive, suggesting some demand for short positions."
+                ]
+            },
+            "probability_of_rise": {
+                "percentage": 70,
+                "reasons": [
+                    "RSI is above 50, indicating bullish momentum.",
+                    "MACD shows positive momentum, suggesting an upward trend.",
+                    "The Fear and Greed Index is in the Greed zone, indicating a positive market sentiment.",
+                    "The price has recently broken above the 50-day moving average, suggesting further upside potential."
+                ]
+            },
+            "risk_awareness": "While the current market conditions seem bullish, the high leverage used in this trade increases the risk of significant losses. It is important to monitor the market closely and be prepared to adjust your position accordingly."
+        },
+        {
+            "timestamp": 1689589854,
+            "hold_order": {
+                "type": "hold"
+            },
+            "order": {},
+            "position": "Hold",
+            "probability_of_fall": {
+                "percentage": 45,
+                "reasons": [
+                    "RSI(14) on the 1-hour chart is above 70, indicating overbought conditions and a potential downward correction.",
+                    "Bollinger Bands are starting to narrow on the daily chart, suggesting a potential pullback.",
+                    "MACD histogram is declining, indicating weakening bullish momentum."
+                ]
+            },
+            "probability_of_rise": {
+                "percentage": 55,
+                "reasons": [
+                    "The price has just broken above the 200-day moving average on the daily chart, suggesting a potential continuation of the uptrend.",
+                    "The Fear and Greed Index is in the greed zone, indicating strong buying sentiment.",
+                    "On-chain metrics show increasing accumulation by large holders."
+                ]
+            },
+            "risk_awareness": "While the market is currently in a bullish sentiment, it is crucial to be cautious due to overbought conditions and potential for a short-term pullback. Hold for now, and be ready to adjust strategies when a clearer trend emerges."
+        }
     ]
 }
  ```
@@ -591,6 +761,48 @@ To explain the provided Binance API data content comprehensively, we can break i
         }
     }
     ```
+    #### 8. Long/Short Ratio
+    - `topTraderLongShortRatio`:
+     - `long_short_ratio_{interval}`:
+      - `symbol`: The trading pair, e.g., "BTCUSDT".
+      - `longAccount`: The percentage of accounts with long positions.
+      - `longShortRatio`: The ratio of long to short positions.
+      - `shortAccount`: The percentage of accounts with short positions.
+
+    ```json
+      "long_short_ratio_1h": [
+          {
+              "symbol": "BTCUSDT",
+              "longAccount": "0.5965",
+              "longShortRatio": "1.4782",
+              "shortAccount": "0.4035",
+          }
+      ],
+      "long_short_ratio_4h": [
+          {
+              "symbol": "BTCUSDT",
+              "longAccount": "0.5971",
+              "longShortRatio": "1.4820",
+              "shortAccount": "0.4029",
+          }
+      ],
+      "long_short_ratio_1d": [
+          {
+              "symbol": "BTCUSDT",
+              "longAccount": "0.5742",
+              "longShortRatio": "1.3485",
+              "shortAccount": "0.4258",
+          }
+      ],
+      "long_short_ratio_1w": [
+          {
+              "symbol": "BTCUSDT",
+              "longAccount": "0.5742",
+              "longShortRatio": "1.3485",
+              "shortAccount": "0.4258",
+          }
+      ]
+    ```
 
 ### Data 3: Fear and Greed Index
 - **Purpose**: The Fear and Greed Index serves as a quantified measure of the crypto market's sentiment, ranging from "Extreme Fear" to "Extreme Greed." This index is pivotal for understanding the general mood among investors and can be instrumental in decision-making processes for Bitcoin trading. Specifically, it helps in gauging whether market participants are too bearish or bullish, which in turn can indicate potential market movements or reversals. Incorporating this data aids in balancing trading strategies with the prevailing market sentiment, optimizing for profit margins while minimizing risks.
@@ -615,6 +827,16 @@ To explain the provided Binance API data content comprehensively, we can break i
 - **MA_60 (60-Day Moving Average)**: The average closing price over the last 60 periods. This medium-term moving average smooths out price action, helping identify the intermediate trend.
 - **MA_120 (120-Day Moving Average)**: The average closing price over the last 120 periods. Used to identify longer-term market trends, providing insight into the overall direction over several months.
 - **MA_200 (200-Day Moving Average)**: The average closing price over the last 200 periods. A widely used long-term moving average that helps determine the overall market trend. A price above the MA_200 indicates an upward trend, while below indicates a downward trend.
+- **Long/Short Ratio**:
+  - `longAccount`: The percentage of accounts with long positions.
+    - **High Long Ratio**: Indicates that a majority of traders expect the price to increase. This can be a bullish signal, but if the long ratio is excessively high, it may suggest overconfidence and a potential for a price correction.
+    - **Strategy for High Long Ratio**: In a positive scenario, consider holding or entering a long position. However, if the market seems overheated, consider taking partial profits or hedging with short positions to mitigate risk.
+  - `longShortRatio`: The ratio of long to short positions.
+    - **High Long/Short Ratio**: Indicates a significantly higher number of long positions compared to short positions. This can signal strong bullish sentiment, but extreme values might indicate a crowded trade and potential for a pullback.
+    - **Strategy for High Long/Short Ratio**: Similar to a high long ratio, assess the overall market conditions. In an overheated market, risk management becomes crucial. Consider strategies like reducing long exposure or implementing hedges.
+  - `shortAccount`: The percentage of accounts with short positions.
+    - **High Short Ratio**: Indicates that a majority of traders expect the price to decrease. This can be a bearish signal, but if the short ratio is excessively high, it may suggest excessive pessimism and a potential for a short squeeze.
+    - **Strategy for High Short Ratio**: In a negative scenario, consider holding or entering a short position. However, if the market seems oversold, be cautious of a possible rebound. Hedging with long positions can help manage the risk.
 
 ### Considerations
 - **Factor in Transaction Fees**: Binance Futures charges fees. The base fees are Maker: 0.0200% and Taker: 0.0500%. If leverage is applied, multiply the fees by the leverage to determine the actual fees that need to be paid. Adjust your calculations to account for these fees to ensure the accuracy of your profit calculations.
@@ -648,7 +870,7 @@ To explain the provided Binance API data content comprehensively, we can break i
 ### Instruction Workflow
 #### Pre-Decision Analysis:
 1. **Review Current Investment State**: Utilize the Asset, Current Position, Assets, Positions, and Open Order data from Data 1 (Current Investment State) for asset management.
-2. **Analyze Market Data**: Refer to Data 2 (Market Analysis) to examine the current market trends, including price movements and technical indicators. Pay special attention to key indicators such as RSI 14, MA, MACD, Bollinger Bands, funding rate, supertrend, stochastic, and other signals indicating potential market direction.
+2. **Analyze Market Data**: Refer to Data 2 (Market Analysis) to examine the current market trends, including price movements and technical indicators. Pay special attention to key indicators such as RSI 14, MA, MACD, Bollinger Bands, funding rate, supertrend, stochastic, Long/Short Ratio and other signals indicating potential market direction.
 3. **Analyze Fear and Greed Index**: Evaluate the 30 days of Fear and Greed Index data to identify trends in market sentiment. Look for patterns of sustained fear or greed, as these may signal overextended market conditions ripe for aggressive trading opportunities. Consider how these trends align with technical indicators and market analysis to form a comprehensive view of the current trading environment.
 4. **Refine Strategies**: Use the insights gained from reviewing the results to refine your trading strategy. This includes adjusting technical analysis approaches or modifying risk management rules.
 
@@ -750,7 +972,8 @@ Guidelines for Creating an Order:
         "positionSide": "LONG"
     },
     "hold_order": {
-    }
+    },
+    "timestamp": 1721258440
 }
 ```
 ```json
@@ -790,7 +1013,8 @@ Guidelines for Creating an Order:
         "positionSide": "LONG"
     },
     "hold_order": {
-    }
+    },
+    "timestamp": 1721258441
 }
 ```
 #### Example: Recommendation to Short
@@ -831,7 +1055,8 @@ Guidelines for Creating an Order:
         "positionSide": "SHORT"
     },
     "hold_order": {
-    }
+    },
+    "timestamp": 1721258443
 }
 ```
 ```json
@@ -871,10 +1096,12 @@ Guidelines for Creating an Order:
         "positionSide": "SHORT"
     },
     "hold_order": {
-    }
+    },
+    "timestamp": 1721258453
 }
 ```
 #### Example: Recommendation to Hold
+If the position is hold, the value of "order" should be empty.
 ##### Explanation of Hold Order Types
  - **Hold**: This type is used when you have an existing position or are refraining from entering a new position due to uncertain market conditions. It means maintaining the current stance without making any new trades.
  - **Close**: This type is used to indicate that the current position should be closed at the present market price. It is used when market conditions suggest that it is prudent to exit the position to avoid potential losses or lock in profits.
@@ -901,7 +1128,8 @@ Guidelines for Creating an Order:
     "order": {},
     "hold_order": {
         "type": "hold"
-    }
+    },
+    "timestamp": 1721258453
 }
 ```
 ```json
@@ -927,7 +1155,8 @@ Guidelines for Creating an Order:
     "order": {},
     "hold_order": {
         "type": "hold"
-    }
+    },
+    "timestamp": 1721257466
 }
 ```
 ```json
@@ -953,7 +1182,8 @@ Guidelines for Creating an Order:
     "order": {},
     "hold_order": {
         "type": "close"
-    }
+    },
+    "timestamp": 1721257490
 }
 ```
 ```json
@@ -979,6 +1209,7 @@ Guidelines for Creating an Order:
     "order": {},
     "hold_order": {
         "type": "close"
-    }
+    },
+    "timestamp": 1721258453
 }
 ```

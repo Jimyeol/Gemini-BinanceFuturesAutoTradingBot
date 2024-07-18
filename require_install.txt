@@ -7,3 +7,4 @@ python-binance
 requests
 google-generativeai
 Pillow
+python-telegram-bot
