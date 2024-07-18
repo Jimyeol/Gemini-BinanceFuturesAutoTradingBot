@@ -1,13 +1,14 @@
-from datetime import datetime
+import datetime
 import os
 import json
 import re
 import time
+import pytz
 
 def save_json_to_file(functionName, data):
     if data:
         # 현재 시간으로 파일 이름 생성
-        current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+        current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         file_name = f"{functionName}_{current_time}.json"
         
         # advice 폴더 경로 생성
@@ -35,7 +36,7 @@ def save_json_to_file(functionName, data):
 def get_latest_files(directory, pattern="advice_*.json", count=5):
     regex = re.compile(r"advice_(\d{8})_(\d{6})\.json")
     files = [f for f in os.listdir(directory) if re.match(regex, f)]
-    files.sort(key=lambda x: datetime.strptime(regex.match(x).groups()[0] + regex.match(x).groups()[1], '%Y%m%d%H%M%S'), reverse=True)
+    files.sort(key=lambda x: datetime.datetime.strptime(regex.match(x).groups()[0] + regex.match(x).groups()[1], '%Y%m%d%H%M%S'), reverse=True)
     latest_files = files[:count]
     return latest_files
 
@@ -53,3 +54,28 @@ def get_instructions(file_path):
         print("File not found.")
     except Exception as e:
         print("An error occurred while reading the file:", e)
+        
+        
+def add_comma_to_number(number_str):
+    """숫자 문자열에 100의 자리마다 쉼표를 추가하는 함수"""
+    parts = number_str.split(".")
+    integer_part = parts[0]
+    decimal_part = parts[1] if len(parts) > 1 else ""
+
+    formatted_integer = "{:,}".format(int(integer_part))
+    return f"{formatted_integer}.{decimal_part}"
+
+
+def unix_to_kst(unix_timestamp):
+    """Unix 시간(초)을 KST 기준으로 변환하여 문자열로 반환합니다."""
+
+    # Unix 시간을 datetime 객체로 변환 (UTC 기준)
+    dt_utc = datetime.datetime.utcfromtimestamp(unix_timestamp / 1000)
+
+    # KST 시간대로 변환
+    kst_timezone = pytz.timezone('Asia/Seoul')
+    dt_kst = dt_utc.replace(tzinfo=pytz.utc).astimezone(kst_timezone)
+
+    # 원하는 형식의 문자열로 변환
+    formatted_time = dt_kst.strftime("%Y. %m. %d. %p %I:%M:%S")
+    return formatted_time.replace("AM", "오전").replace("PM", "오후")

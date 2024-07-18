@@ -1,0 +1,25 @@
+{
+    "hold_order": {
+        "type": "hold"
+    },
+    "order": {},
+    "position": "Hold",
+    "probability_of_fall": {
+        "percentage": 40,
+        "reasons": [
+            "RSI(14) is in the overbought territory on the 1-hour chart, suggesting a potential pullback.",
+            "Bollinger Bands are starting to narrow on the daily chart, suggesting a potential period of consolidation.",
+            "MACD histogram is declining on the daily chart, indicating weakening bullish momentum."
+        ]
+    },
+    "probability_of_rise": {
+        "percentage": 60,
+        "reasons": [
+            "The price is currently above the 200-day moving average on the daily chart, suggesting a potential continuation of the uptrend.",
+            "The Fear and Greed Index is in the Greed zone, indicating strong buying sentiment and positive market sentiment.",
+            "On-chain metrics show increasing accumulation by large holders."
+        ]
+    },
+    "risk_awareness": "While the market is currently showing a bullish sentiment, it is important to be cautious due to overbought conditions and potential for a short-term pullback. Hold for now, and be ready to adjust strategies when a clearer trend emerges.",
+    "timestamp": 1721276931
+}
