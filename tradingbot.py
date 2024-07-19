@@ -117,18 +117,24 @@ def analyze_data_with_gpt4(my_data, indicator, fear_greed_index):
     message_json = json.dumps(message)
     
     return model.generate_content(message_json)
-
-advice = analyze_data_with_gpt4(my_data, indicator, alternative.get_fear_and_greed_index(limit=30))
-util.save_json_to_file("advice", json.loads(advice.text))
-binance_api.process_order(json.loads(advice.text))
-telegram_bot.send_message_position(json.loads(advice.text))
     
-# def run_analysis():
+def run_analysis():
+    advice = analyze_data_with_gpt4(my_data, indicator, alternative.get_fear_and_greed_index(limit=30))
+    util.save_json_to_file("advice", json.loads(advice.text))
+    binance_api.process_order(json.loads(advice.text))
+    telegram_bot.send_message_position(json.loads(advice.text))
     
     
 # 4시간마다 job 함수 실행 예약
-# schedule.every(4).hours.do(run_analysis)
+schedule.every().day.at("01:01").do(run_analysis)
+schedule.every().day.at("05:01").do(run_analysis)
+schedule.every().day.at("09:01").do(run_analysis)
+schedule.every().day.at("13:01").do(run_analysis)
+schedule.every().day.at("17:01").do(run_analysis)
+schedule.every().day.at("21:01").do(run_analysis)
 
-# while True:
-#     schedule.run_pending()
-#     time.sleep(60)  # 1분마다 실행
+while True:
+    schedule.run_pending()
+    time.sleep(60)  # 1분마다 실행
+    print("running...")
+    
