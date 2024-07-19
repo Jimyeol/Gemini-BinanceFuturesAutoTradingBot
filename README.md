@@ -99,3 +99,8 @@ Here is an example of the JSON advice received from Gemini, which guides the tra
     "timestamp": 1689607454
 }
 ```
+
+
+### Test
+Gemini Token's limited quantity prevents backtesting, so we're conducting live tests. This log will record entries, take-profits, and stop-losses. We're starting the test with high expectations for good profits.
+- 2024. 07. 19 - 63.39 USDT Start
