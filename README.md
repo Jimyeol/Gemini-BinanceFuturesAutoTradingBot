@@ -102,5 +102,5 @@ Here is an example of the JSON advice received from Gemini, which guides the tra
 
 
 ### Test
-Gemini Token's limited quantity prevents backtesting, so we're conducting live tests. This log will record entries, take-profits, and stop-losses. We're starting the test with high expectations for good profits.
+Gemini Token's limited quantity prevents backtesting, so we're conducting live tests. This log will record entries, take-profits, and stop-losses. We're starting the test with high expectations for good profits. `This program runs every 4 hours and aims to generate profits safely.`
 - _2024. 07. 19_ - **63.39 USDT** Start
