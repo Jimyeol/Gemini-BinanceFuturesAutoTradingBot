@@ -12,7 +12,7 @@ def save_json_to_file(functionName, data):
         file_name = f"{functionName}_{current_time}.json"
         
         # advice 폴더 경로 생성
-        directory = "advice"
+        directory = "scalping"
         if not os.path.exists(directory):
             os.makedirs(directory)
 
