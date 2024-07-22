@@ -118,7 +118,7 @@ def run_analysis():
     advice = analyze_data_with_gpt4(my_data, candle15, candle30)
     util.save_json_to_file("scalping", json.loads(advice.text))
     binance_api.process_order(json.loads(advice.text))
-    #telegram_bot.send_message_position(json.loads(advice.text))
+    telegram_bot.send_message_position(json.loads(advice.text))
     
 # 15분마다 job 함수 실행 예약
 run_analysis()
