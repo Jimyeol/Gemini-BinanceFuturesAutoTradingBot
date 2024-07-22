@@ -584,6 +584,6 @@ def close_all_positions():
     open_positions = get_open_positions()
     for position in open_positions:
         symbol = position['symbol']
-        quantity = abs(float(position['positionAmt']))
-        side = SIDE_SELL if float(position['positionAmt']) > 0 else SIDE_BUY
-        close_position(symbol, side, quantity)
+        um_futures_client.cancel_open_orders(
+            symbol
+        )
