@@ -102,5 +102,10 @@ Here is an example of the JSON advice received from Gemini, which guides the tra
 
 
 ### Test
-Gemini Token's limited quantity prevents backtesting, so we're conducting live tests. This log will record entries, take-profits, and stop-losses. We're starting the test with high expectations for good profits. `This program runs every 4 hours and aims to generate profits safely.`
-- _2024. 07. 19_ - **63.39 USDT** Start
+~~Gemini Token's limited quantity prevents backtesting, so we're conducting live tests. This log will record entries, take-profits, and stop-losses. We're starting the test with high expectations for good profits. `This program runs every 4 hours and aims to generate profits safely.`~~
+~~- _2024. 07. 19_ - **63.39 USDT** Start~~
+
+Restarting with a focus on scalping. The previous prompt was too patient and didn't enter trades frequently enough. Replacing it with a more active scalping bot.
+- _2024. 07. 23_ - **44.96 USDT** Start
+
+
