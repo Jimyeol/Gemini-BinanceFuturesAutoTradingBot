@@ -493,7 +493,8 @@ def process_order(result):
             print("Holding position. No new orders will be placed.")
         elif action == 'close':
             print("Close All Position.")
-            close_all_positions()  # close_all_positions 함수 호출
+            close_all_current_positions()
+            close_all_open_orders()  # close_all_positions 함수 호출
 
         return  # hold 또는 close 처리 후 함수 종료
     
@@ -512,7 +513,7 @@ def process_order(result):
     # Calculate the quantity to order based on the investment percentage
     total_balance = get_balance()
     investment_amount = total_balance * (investment_percentage / 100)
-    order_quantity = investment_amount / entry_price
+    order_quantity = (investment_amount * leverage) / entry_price
     
     # Prepare the order details for entry
     entry_order_details = {
@@ -569,23 +570,54 @@ def get_open_positions():
         print(f"Error fetching open positions: {e}")
         return []
 
-def close_position(symbol, side, quantity):
-    try:
-        response = um_futures_client.new_order(
-            symbol=symbol,
-            side=side,
-            type=FUTURE_ORDER_TYPE_MARKET,
-            quantity=quantity,
-            reduceOnly=True
-        )
-        print(f"Closed position for {symbol}: {response}")
-    except Exception as e:
-        print(f"Error closing position for {symbol}: {e}")
 
-def close_all_positions():
-    open_positions = get_open_positions()
-    for position in open_positions:
-        symbol = position['symbol']
-        um_futures_client.cancel_open_orders(
-            symbol
+def close_all_open_orders():
+    """
+    Binance UMFutures API를 사용하여 현재 열려있는 모든 주문의 포지션을 종료하는 함수
+
+    Args:
+        api_key (str): Binance API Key
+        api_secret (str): Binance API Secret
+    """
+    # 현재 열려있는 주문 정보 가져오기
+    open_orders = um_futures_client.get_open_orders()
+
+    for order in open_orders:
+        symbol = order['symbol']
+        orderId = order['orderId']
+
+        # 주문 취소
+        cancel_order = um_futures_client.cancel_order(
+            symbol=symbol,
+            orderId=orderId
         )
+
+        print(f"Canceled order for {symbol}: {cancel_order}")
+        
+def close_all_current_positions():
+    """
+    Binance UMFutures API를 사용하여 현재 모든 포지션을 시장가로 종료하는 함수
+
+    Args:
+        api_key (str): Binance API Key
+        api_secret (str): Binance API Secret
+    """
+
+    # 현재 포지션 정보 가져오기
+    positions = um_futures_client.get_position_risk()
+
+    for position in positions:
+        if float(position['positionAmt']) != 0:  # 포지션이 존재하는 경우
+            symbol = position['symbol']
+            side = 'BUY' if float(position['positionAmt']) < 0 else 'SELL'  # 현재 포지션 반대 방향으로 주문
+
+            # 시장가 주문 생성 및 포지션 종료
+            order = um_futures_client.new_order(
+                symbol=symbol,
+                side=side,
+                type='MARKET',
+                quantity=abs(float(position['positionAmt'])),
+                reduceOnly='true'  # 포지션 종료만 허용
+            )
+
+            print(f"Closed {symbol} position: {order}")

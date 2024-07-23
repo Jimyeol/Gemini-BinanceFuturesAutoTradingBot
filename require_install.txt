@@ -1,8 +1,8 @@
 python-dotenv
-pyjwt
 pandas
 pandas_ta
 schedule
+binance-futures-connector
 python-binance
 requests
 google-generativeai
