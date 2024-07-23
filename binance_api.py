@@ -486,14 +486,16 @@ def place_order(order_details):
         print(f"Error placing order: {e}")
 
 def process_order(result):
-    if 'type' in result['hold_order'] and result['hold_order']['type'] == 'hold':
-        print("Holding position. No new orders will be placed.")
-        return
-    
-    if 'type' in result['hold_order'] and result['hold_order']['type'] == 'close':
-        print("Close All Position.")
-        close_all_positions()
-        return
+    if 'type' in result['hold_order'] and result['hold_order']['type'].lower() in ['hold', 'close']:  # 대소문자 구분 없이 비교
+        action = result['hold_order']['type'].lower()  # action 변수에 소문자로 저장
+
+        if action == 'hold':
+            print("Holding position. No new orders will be placed.")
+        elif action == 'close':
+            print("Close All Position.")
+            close_all_positions()  # close_all_positions 함수 호출
+
+        return  # hold 또는 close 처리 후 함수 종료
     
     symbol = result['order']['symbol']
     leverage = result['order']['leverage']

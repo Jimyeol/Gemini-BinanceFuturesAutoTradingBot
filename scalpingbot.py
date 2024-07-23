@@ -86,16 +86,15 @@ def get_ema(candles_df):
     return result
     
 
-def analyze_data_with_gpt4(my_data, candle15, candle30):
-    # 메시지 형식을 JSON 문자열로 변환
-    message = [
-        {"role": "user", "content": my_data},
-        {"role": "user", "content": candle15},
-        {"role": "user", "content": candle30}
-    ]
-    message_json = json.dumps(message)
-    
-    return model.generate_content(message_json)
+def analyze_data_with_gpt4(my_data, candleD, candle5, candle15):
+    return model.generate_content(genai.protos.Content(
+        parts = [
+            genai.protos.Part(text=my_data),
+            genai.protos.Part(text=candleD),
+            genai.protos.Part(text=candle5),
+            genai.protos.Part(text=candle15),
+        ],
+    ))
 
 def run_analysis():
     open_order = json.loads(binance_api.get_open_orders())
@@ -112,20 +111,19 @@ def run_analysis():
         "open_order": open_order
     }
 
-    candle15 = json.loads(get_ema(binance_api.get_candles("BTCUSDT", '15m', 100)))
-    candle30 = json.loads(get_ema(binance_api.get_candles("BTCUSDT", '30m', 100)))
+    candleDaily = binance_api.get_candles("BTCUSDT", '1d', 100).to_json(orient='records')
+    candle5 = get_ema(binance_api.get_candles("BTCUSDT", '5m', 100))
+    candle15 = get_ema(binance_api.get_candles("BTCUSDT", '15m', 100))
 
-    advice = analyze_data_with_gpt4(my_data, candle15, candle30)
+    advice = analyze_data_with_gpt4(json.dumps(my_data), candleDaily, candle5, candle15)
     util.save_json_to_file("scalping", json.loads(advice.text))
     binance_api.process_order(json.loads(advice.text))
     telegram_bot.send_message_position(json.loads(advice.text))
     
-# 15분마다 job 함수 실행 예약
+    
+#15분마다 job 함수 실행 예약
 run_analysis()
 schedule.every(15).minutes.do(run_analysis)
 
 while True:
     schedule.run_pending()
-
-    
-
