@@ -580,7 +580,7 @@ def close_all_open_orders():
         api_secret (str): Binance API Secret
     """
     # 현재 열려있는 주문 정보 가져오기
-    open_orders = um_futures_client.get_open_orders()
+    open_orders = um_futures_client.get_orders()
 
     for order in open_orders:
         symbol = order['symbol']
@@ -593,6 +593,7 @@ def close_all_open_orders():
         )
 
         print(f"Canceled order for {symbol}: {cancel_order}")
+        
         
 def close_all_current_positions():
     """
