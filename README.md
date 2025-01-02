@@ -106,6 +106,8 @@ Here is an example of the JSON advice received from Gemini, which guides the tra
 ~~- _2024. 07. 19_ - **63.39 USDT** Start~~
 
 Restarting with a focus on scalping. The previous prompt was too patient and didn't enter trades frequently enough. Replacing it with a more active scalping bot.
-- _2024. 07. 23_ - **44.96 USDT** Start
+~~- _2024. 07. 23_ - **44.96 USDT** Start~~
+
+#### I got liquidated. I went in aggressively, like really aggressively, with 50x leverage, and got wiped out. Don’t use automated trading bots.
 
 
